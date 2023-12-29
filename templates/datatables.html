@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Serverside Datatables</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAMFBMVEU0OkArMjhobHEoPUPFEBIu
+        O0L+AAC2FBZ2JyuNICOfGx7xAwTjCAlCNTvVDA1aLzQ3COjMAAAAVUlEQVQI12NgwAaCDSA0888G
+        CItjn0szWGBJTVoGSCjWs8TleQCQYV95evdxkFT8Kpe0PLDi5WfKd4LUsN5zS1sKFolt8bwAZrCa
+        GqNYJAgFDEpQAAAzmxafI4vZWwAAAABJRU5ErkJggg==" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+</head>
+<body>
+    <table id="myTable" class="display dark table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Chat name</th>
+                <th>Created By</th>
+                <th>Allowed users</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Chat name</th>
+                <th>Created By</th>
+                <th>Allowed users</th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            $('#myTable tfoot th').each( function () {
+                var title = $(this).text();
+                $(this).html( '<input type="text" class="form-control form-control-sm" id="'+title+'" placeholder="Filter '+title+'" />' );
+            });
+
+            //Creates main datatable
+            var table = $("#myTable").DataTable({
+                pagingType: "full",
+                serverSide: true,
+                processing: true,
+                stateSave: true,
+                lengthMenu: [[50, 10, 25, 100, -1], [50, 10, 25, 100, "All"]],
+                dom: "<'row'<'col-sm-5 pagination-sm'p><'col-sm-4'B><'col-sm-3'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-5'><'col-sm-1'l>>",
+                order: [[1, 'desc']],
+                ajax: {
+                    "url": "{{ url_for('serverside_datatables_api') }}",
+                    "type": 'GET',
+                    "data": function(d){
+                            d.tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                        },
+                },
+                columns: [
+                    {data: 'chat_name'},
+                    {data: "created_by_name"},
+                    {data: "allowed_users"},
+                ]
+            });
+
+            //Moves column search to top row under column headers
+            $('#myTable tfoot tr').appendTo('#myTable thead');
+
+            // Apply and send the single column search.
+            // Takes column search variables and submits to datatables
+            table.columns().every( function () {
+                var that = this;
+
+                $( 'select', this.footer() ).change(function(event) {
+                    if ( that.search() !== this.value) {
+                        that.search( this.value ).draw();
+                    }
+                });
+
+                $( 'input', this.footer() ).keyup(function(event) {
+                    if (event.keyCode === 13) {
+                        if ( that.search() !== this.value) {
+                            var val = this.value
+                            that.search(val).draw();
+                        }
+                    }
+                });
+            });
+
+            // Modifies general search so that it only fires on enter
+            $('.dataTables_filter input').unbind().bind('keyup', function(e) {
+                if(e.keyCode == 13) {
+                    table.search($(this).val()).draw();
+                }
+            });
+        });
+
+
+    </script>
+</body>
+</html>
