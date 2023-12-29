@@ -58,16 +58,8 @@ class DataTable(object):
             self.columns.append(d)
             self.columns_dict[d.name] = d
 
-        # for column in (col for col in self.columns if "." in col.model_name):
-        #     self.query = self.query.join(column.model_name.split(".")[0], aliased=True)
-
-        from sqlalchemy.orm import aliased
-        a = {}
-        for k, column in enumerate((col for col in self.columns if "." in col.model_name)):
-            name = f'{column.model_name}{column}'
-            a[name] = aliased(self.model)
-            col = getattr(self.model, column.model_name.split(".")[0])
-            self.query = self.query.join(a[name])
+        for column in (col for col in self.columns if "." in col.model_name):
+            self.query = self.query.join(column.model_name.split(".")[0], aliased=True)
 
     def query_into_dict(self, key_start):
         returner = defaultdict(dict)
@@ -313,7 +305,8 @@ class DataTable(object):
     #     for col in df.select_dtypes(['datetimetz']).columns:
     #         df[col] = pd.to_datetime(v(df[col].dt.strftime("%m/%d/%Y %r"), tz)).strftime("%m/%d/%Y %r")
     #
-    #     df.drop(['id'], inplace=True, axis=1)
+    #     if "id" in df.columns:
+    #         df.drop(['id'], inplace=True, axis=1)
     #
     #     resp = make_response(df.to_csv(index=False))
     #     resp.headers["Content-Disposition"] = f"attachment; filename={filename}.csv"
