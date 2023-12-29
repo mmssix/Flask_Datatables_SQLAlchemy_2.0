@@ -2,6 +2,7 @@
 To test the update to [sqlalchemy-datatables](https://github.com/orf/datatables/tree/master) from sqlalchmy 1.4, to 2.0.
 
 Run with: `https://github.com/orf/datatables/tree/master`
+
 Open shell with: `https://github.com/orf/datatables/tree/master`
 
 This example site should then be running at : http://127.0.0.1:5000/
