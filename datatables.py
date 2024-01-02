@@ -4,6 +4,10 @@ https://github.com/orf/datatables/
 from collections import defaultdict, namedtuple
 import re
 import inspect
+from sqlalchemy.orm import aliased, with_polymorphic
+from sqlalchemy.orm import join
+
+
 # import numpy as np
 # import pandas as pd
 # from flask import make_response
@@ -59,7 +63,9 @@ class DataTable(object):
             self.columns_dict[d.name] = d
 
         for column in (col for col in self.columns if "." in col.model_name):
-            self.query = self.query.join(column.model_name.split(".")[0], aliased=True)
+            parent_table = getattr(self.model, column.model_name.split(".")[0])
+            self.query = self.query.join(parent_table)
+            
 
     def query_into_dict(self, key_start):
         returner = defaultdict(dict)
