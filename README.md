@@ -1,9 +1,9 @@
 ### Purpose:
 To test the update to [sqlalchemy-datatables](https://github.com/orf/datatables/tree/master) from sqlalchmy 1.4, to 2.0.
 
-Run with: `https://github.com/orf/datatables/tree/master`
+Run with: `flask --app dt_project run`
 
-Open shell with: `https://github.com/orf/datatables/tree/master`
+Open shell with: `flask --app dt_project shell`
 
 This example site should then be running at : http://127.0.0.1:5000/
 
