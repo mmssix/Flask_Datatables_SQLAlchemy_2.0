@@ -192,7 +192,6 @@ class DataTable(object):
         if length > 0:
             query = query.slice(start, start + length)
 
-        print("ALL : ", query.all())
         return {
             "draw": draw,
             "recordsTotal": total_records,
@@ -231,9 +230,8 @@ class DataTable(object):
                 if not inspect.isbuiltin(r):
                     r = vars(r)
                     del r['_sa_instance_state']
-            except Exception as e:
-                print("Exceprion : ", e)
-
+            except:
+                pass
 
         return r() if inspect.isroutine(r) else r
 
