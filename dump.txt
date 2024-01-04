@@ -1,0 +1,62 @@
+Traceback (most recent call last):
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/flask/app.py", line 1478, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/flask/app.py", line 1458, in wsgi_app
+    response = self.handle_exception(e)
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "/home/radio/old_work/portal/app/blueprints/wait/routes.py", line 153, in wait_index_dt_api
+    ret = table.json()
+  File "/home/radio/old_work/portal/app/utils/datatables.py", line 118, in json
+    return self._json()
+  File "/home/radio/old_work/portal/app/utils/datatables.py", line 199, in _json
+    "data": [
+  File "/home/radio/old_work/portal/app/utils/datatables.py", line 200, in <listcomp>
+    self.output_instance(instance) for instance in query.all()
+  File "/home/radio/old_work/portal/app/utils/datatables.py", line 205, in output_instance
+    returner = {
+  File "/home/radio/old_work/portal/app/utils/datatables.py", line 206, in <dictcomp>
+    key.name: self.get_value(key, instance) for key in self.columns
+  File "/home/radio/old_work/portal/app/utils/datatables.py", line 225, in get_value
+    r = key.filter(instance)
+  File "/home/radio/old_work/portal/app/blueprints/wait/routes.py", line 105, in <lambda>
+    ("assigned_to", "assigned_to", lambda i: '/'.join([f'{x.assigned_to.shortname()}' for x in i.assigned_to])),
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/orm/attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/orm/attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/orm/attributes.py", line 1121, in _fire_loader_callables
+    return self.callable_(state, passive)
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/orm/strategies.py", line 967, in _load_for_state
+    return self._emit_lazyload(
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/orm/strategies.py", line 1134, in _emit_lazyload
+    result = result.unique().scalars().all()
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/engine/result.py", line 1783, in all
+    return self._allrows()
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/engine/result.py", line 551, in _allrows
+    rows = self._fetchall_impl()
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/engine/result.py", line 1690, in _fetchall_impl
+    return self._real_result._fetchall_impl()
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/engine/result.py", line 2290, in _fetchall_impl
+    return list(self.iterator)
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/orm/loading.py", line 221, in chunks
+    rows = [proc(row) for row in fetch]
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/orm/loading.py", line 221, in <listcomp>
+    rows = [proc(row) for row in fetch]
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/orm/loading.py", line 1126, in _instance
+    _populate_full(
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/orm/loading.py", line 1334, in _populate_full
+    populator(state, dict_, row)
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/orm/strategies.py", line 2776, in load_scalar_from_joined_new_row
+    dict_[key] = _instance(row)
+  File "/home/radio/old_work/portal/venv/lib/python3.10/site-packages/sqlalchemy/orm/loading.py", line 1071, in _instance
+    state = instance_state(instance)
+AttributeError: 'Users' object has no attribute '_sa_instance_state'
