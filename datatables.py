@@ -4,8 +4,7 @@ https://github.com/orf/datatables/
 from collections import defaultdict, namedtuple
 import re
 import inspect
-from sqlalchemy.orm import aliased, with_polymorphic
-from sqlalchemy.orm import join
+
 
 
 # import numpy as np
@@ -228,9 +227,13 @@ class DataTable(object):
             r = getattr(instance, attr)
             try:
                 if not inspect.isbuiltin(r):
-                    r = vars(r)
-                    del r['_sa_instance_state']
-            except:
+                    attributes = vars(r)
+                    values  = {}
+                    for attribute in attributes.keys():
+                        if attribute != '_sa_instance_state':
+                            values[attribute] = getattr(r, attribute)
+                    r = values
+            except Exception as e:
                 pass
 
         return r() if inspect.isroutine(r) else r
